@@ -1,8 +1,9 @@
-// @ts-check
-import { defineConfig } from 'astro/config';
+import { defineConfig } from "astro/config";
 
-// https://astro.build/config
+const isGithub = process.env.DEPLOY_TARGET === "github";
+
 export default defineConfig({
-  site: 'https://m9studios.github.io',
-  base: '/arch-portfolio',
+  site: isGithub ? "https://sman-1010.github.io" : undefined,
+  base: isGithub ? "/arch-portfolio/" : "/",
+  output: "static",
 });
