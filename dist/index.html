@@ -1,0 +1,84 @@
+<!DOCTYPE html><link rel="stylesheet" href="/arch-portfolio/_astro/about.BWwFaSCR.css"><nav class="center-nav nav-light"> <a href="/arch-portfolio/">Home</a> <a href="/arch-portfolio/projects">Projects</a> <a href="/arch-portfolio/about">About</a> </nav> <section class="hero-fullscreen"> <div class="hero-overlay"></div> <div class="hero-foreground" aria-hidden="true"></div> <div class="hero-text-content"> <p class="hero-greeting">Welcome to</p> <h1 class="hero-name"> <span class="digit-wrapper"> <span class="digit" data-final="4">4</span> </span> <span class="digit-wrapper"> <span class="digit" data-final="0">0</span> </span> <span class="digit-wrapper"> <span class="digit" data-final="4">4</span> </span> <span class="studio-text">Studio</span> </h1> <p class="hero-tagline">Nice tagline here</p> </div> </section> <section class="featured-section"> <h2 class="featured-title">Featured <strong>Portfolio</strong></h2> <div class="portfolio-grid"> <a href="/arch-portfolio/projects/house-1" class="portfolio-item"> <img src="/arch-portfolio/images/project01-thumb.png" alt="House 1"> <div class="portfolio-overlay"> <h3>House 1</h3> <p>Residential Project</p> </div> </a> <a href="/arch-portfolio/projects/house-2" class="portfolio-item"> <img src="/arch-portfolio/images/project02-thumb.png" alt="House 2"> <div class="portfolio-overlay"> <h3>House 2</h3> <p>Residential Renovation</p> </div> </a> <a href="/arch-portfolio/projects/room-1" class="portfolio-item"> <img src="/arch-portfolio/images/project03-thumb.png" alt="Room 1"> <div class="portfolio-overlay"> <h3>Room 1</h3> <p>Multi-Unit Housing</p> </div> </a> <a href="/arch-portfolio/projects/castle-1" class="portfolio-item"> <img src="/arch-portfolio/images/project04-thumb.png" alt="Castle 1"> <div class="portfolio-overlay"> <h3>Castle 1</h3> <p>Civic / Cultural</p> </div> </a> </div> </section> <script type="module">
+  import gsap from "https://esm.sh/gsap@3.12.5";
+  import ScrollTrigger from "https://esm.sh/gsap@3.12.5/ScrollTrigger";
+
+  gsap.registerPlugin(ScrollTrigger);
+
+  // Hero entrance
+  gsap.from(".hero-greeting", {
+    opacity: 0,
+    y: 20,
+    duration: 0.8,
+    ease: "power2.out"
+  });
+
+  // Slot machine animation for 404
+  const digits = document.querySelectorAll(".digit");
+  digits.forEach((digit, index) => {
+    const finalValue = parseInt(digit.dataset.final);
+    const duration = 1.5 + (index * 0.2); // Stagger the settling time
+    const spinCount = 15 + (index * 5); // Number of digit changes
+    
+    let counter = 0;
+    const interval = setInterval(() => {
+      digit.textContent = Math.floor(Math.random() * 10);
+      counter++;
+      
+      if (counter >= spinCount) {
+        clearInterval(interval);
+        // Settle on final value with slight bounce
+        gsap.to(digit, {
+          textContent: finalValue,
+          duration: 0.3,
+          ease: "power2.out",
+          onUpdate: function() {
+            digit.textContent = Math.round(this.targets()[0].textContent);
+          }
+        });
+      }
+    }, 50); // Change digit every 50ms
+  });
+
+  // Fade in Studio text after digits settle
+  gsap.from(".studio-text", {
+    opacity: 0,
+    x: -20,
+    duration: 0.8,
+    delay: 2,
+    ease: "power2.out"
+  });
+
+  gsap.from(".hero-tagline", {
+    opacity: 0,
+    y: 20,
+    duration: 0.8,
+    delay: 2.2,
+    ease: "power2.out"
+  });
+
+  // Scroll reveal
+  gsap.from(".featured-title", {
+    scrollTrigger: {
+      trigger: ".featured-section",
+      start: "top 80%",
+      once: true
+    },
+    opacity: 0,
+    y: 30,
+    duration: 0.8,
+    ease: "power2.out"
+  });
+
+  gsap.from(".portfolio-item", {
+    scrollTrigger: {
+      trigger: ".portfolio-grid",
+      start: "top 75%",
+      once: true
+    },
+    opacity: 0,
+    y: 40,
+    duration: 0.9,
+    stagger: 0.15,
+    ease: "power2.out"
+  });
+</script>

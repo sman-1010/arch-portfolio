@@ -1,0 +1,77 @@
+<!DOCTYPE html><html lang="en"> <head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>House 1 — Portfolio</title><script src="https://cdn.jsdelivr.net/npm/gsap@3.12.5/dist/gsap.min.js"></script><script src="https://cdn.jsdelivr.net/npm/gsap@3.12.5/dist/ScrollTrigger.min.js"></script><script type="module" src="https://ajax.googleapis.com/ajax/libs/model-viewer/3.3.0/model-viewer.min.js"></script><link rel="stylesheet" href="/arch-portfolio/_astro/about.BWwFaSCR.css"></head> <body> <nav class="center-nav"> <a href="/arch-portfolio/">Home</a> <a href="/arch-portfolio/projects">Projects</a> <a href="/arch-portfolio/about">About</a> </nav> <div class="project-intro"> <section class="project-header"> <h1 class="project-title">House 1</h1> <div class="project-meta"> <div class="project-meta-item"> <span class="project-meta-label">Year</span> <span class="project-meta-value">2017</span> </div> <div class="project-meta-item"> <span class="project-meta-label">Location</span> <span class="project-meta-value">F-8/3, Islamabad, Pakistan</span> </div> <div class="project-meta-item"> <span class="project-meta-label">Type</span> <span class="project-meta-value">Residential Project | Built</span> </div> </div> <p class="project-description">A compact residential project in Islamabad focusing on local climate, natural ventilation and layered indoor-outdoor living.</p> </section> <model-viewer src="/arch-portfolio/models/project01_desktop.glb" alt="3D model of House 1" camera-controls="true" auto-rotate="true" shadow-intensity="1" style="width: 100%; height: 70vh;"></model-viewer> </div> <section class="project-carousel"> <div class="carousel-container"> <div class="carousel-track"> <div class="carousel-slide" data-index="0"> <img src="/arch-portfolio/images/project01-thumb.png" alt="House 1"> </div><div class="carousel-slide" data-index="1"> <img src="/arch-portfolio/images/project01-thumb.png" alt="House 1"> </div> </div> <button class="carousel-arrow carousel-prev" aria-label="Previous image"> <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"> <path d="M15 18l-6-6 6-6"></path> </svg> </button> <button class="carousel-arrow carousel-next" aria-label="Next image"> <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"> <path d="M9 18l6-6-6-6"></path> </svg> </button> </div> </section> <script>
+      // Register GSAP plugins
+      gsap.registerPlugin(ScrollTrigger);
+
+      // Hero image / model fade in (only if element exists)
+      const projectHero = document.querySelector('.project-hero');
+      if (projectHero) {
+        gsap.from(projectHero, {
+          opacity: 0,
+          duration: 1.5,
+          ease: 'power2.out'
+        });
+      }
+
+      // Metadata slides up (guarded)
+      const projectHeader = document.querySelector('.project-header');
+      if (projectHeader) {
+        gsap.from(projectHeader, {
+          opacity: 0,
+          y: 30,
+          duration: 1.2,
+          delay: 0.3,
+          ease: 'power2.out'
+        });
+      }
+
+      // Centered carousel with auto-advance
+      const track = document.querySelector('.carousel-track');
+      const slides = document.querySelectorAll('.carousel-slide');
+      const prevBtn = document.querySelector('.carousel-prev');
+      const nextBtn = document.querySelector('.carousel-next');
+      
+      if (track && slides.length > 0) {
+        let currentIndex = 0;
+        let autoplayInterval;
+        
+        function goToSlide(index) {
+          currentIndex = (index + slides.length) % slides.length;
+          gsap.to(track, {
+            x: -currentIndex * 100 + '%',
+            duration: 0.8,
+            ease: 'power2.inOut'
+          });
+        }
+        
+        function nextSlide() {
+          goToSlide(currentIndex + 1);
+        }
+        
+        function prevSlide() {
+          goToSlide(currentIndex - 1);
+        }
+        
+        function startAutoplay() {
+          stopAutoplay();
+          autoplayInterval = setInterval(nextSlide, 4000);
+        }
+        
+        function stopAutoplay() {
+          if (autoplayInterval) clearInterval(autoplayInterval);
+        }
+        
+        nextBtn.addEventListener('click', () => {
+          nextSlide();
+          stopAutoplay();
+          startAutoplay();
+        });
+        
+        prevBtn.addEventListener('click', () => {
+          prevSlide();
+          stopAutoplay();
+          startAutoplay();
+        });
+        
+        startAutoplay();
+      }
+    </script> </body> </html>
