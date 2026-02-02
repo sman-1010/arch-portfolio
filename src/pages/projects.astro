@@ -111,8 +111,9 @@ const castle1Href = norm('/projects/castle-1');
         gsap.timeline({
           scrollTrigger: {
             trigger: project,
-            start: "top 80%",
-            once: true
+            start: "top 92%",
+            once: true,
+            invalidateOnRefresh: true
           }
         })
         .to(number, {

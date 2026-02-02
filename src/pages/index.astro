@@ -148,7 +148,7 @@ const castle1Href = norm('/projects/castle-1');
   gsap.from(".featured-title", {
     scrollTrigger: {
       trigger: ".featured-section",
-      start: "top 80%",
+      start: "top 90%",
       once: true
     },
     opacity: 0,
@@ -160,7 +160,7 @@ const castle1Href = norm('/projects/castle-1');
   gsap.from(".portfolio-item", {
     scrollTrigger: {
       trigger: ".portfolio-grid",
-      start: "top 75%",
+      start: "top 90%",
       once: true
     },
     opacity: 0,
@@ -169,4 +169,10 @@ const castle1Href = norm('/projects/castle-1');
     stagger: 0.15,
     ease: "power2.out"
   });
+  // Refresh ScrollTrigger on orientation change to ensure positions recalc on mobile
+  if (typeof window !== 'undefined') {
+    window.addEventListener('orientationchange', () =&gt; {
+      try{ ScrollTrigger.refresh(); } catch(e){}
+    });
+  }
 </script>
