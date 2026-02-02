@@ -107,47 +107,104 @@ const { title, year, location, type, description, hero, images, model } = Astro.
       ></model-viewer>
     </div>
 
-    <section class="project-images">
-      {images.map((img) => (
-        <img src={img} alt={title} />
-      ))}
+    <section class="project-carousel">
+      <div class="carousel-container">
+        <div class="carousel-track">
+          {images.map((img, index) => (
+            <div class="carousel-slide" data-index={index}>
+              <img src={img} alt={title} />
+            </div>
+          ))}
+        </div>
+        <button class="carousel-arrow carousel-prev" aria-label="Previous image">
+          <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <path d="M15 18l-6-6 6-6"/>
+          </svg>
+        </button>
+        <button class="carousel-arrow carousel-next" aria-label="Next image">
+          <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <path d="M9 18l6-6-6-6"/>
+          </svg>
+        </button>
+      </div>
     </section>
 
     <script is:inline>
       // Register GSAP plugins
       gsap.registerPlugin(ScrollTrigger);
 
-      // Hero image fade in
-      gsap.from('.project-hero', {
-        opacity: 0,
-        duration: 1.5,
-        ease: 'power2.out'
-      });
-
-      // Metadata slides up
-      gsap.from('.project-header', {
-        opacity: 0,
-        y: 30,
-        duration: 1.2,
-        delay: 0.3,
-        ease: 'power2.out'
-      });
-
-      // Images reveal sequentially on scroll
-      const projectImages = document.querySelectorAll('.project-images img');
-      projectImages.forEach((img) => {
-        gsap.from(img, {
-          scrollTrigger: {
-            trigger: img,
-            start: 'top 75%',
-            once: true
-          },
+      // Hero image / model fade in (only if element exists)
+      const projectHero = document.querySelector('.project-hero');
+      if (projectHero) {
+        gsap.from(projectHero, {
           opacity: 0,
-          y: 40,
-          duration: 1,
+          duration: 1.5,
           ease: 'power2.out'
         });
-      });
+      }
+
+      // Metadata slides up (guarded)
+      const projectHeader = document.querySelector('.project-header');
+      if (projectHeader) {
+        gsap.from(projectHeader, {
+          opacity: 0,
+          y: 30,
+          duration: 1.2,
+          delay: 0.3,
+          ease: 'power2.out'
+        });
+      }
+
+      // Centered carousel with auto-advance
+      const track = document.querySelector('.carousel-track');
+      const slides = document.querySelectorAll('.carousel-slide');
+      const prevBtn = document.querySelector('.carousel-prev');
+      const nextBtn = document.querySelector('.carousel-next');
+      
+      if (track && slides.length > 0) {
+        let currentIndex = 0;
+        let autoplayInterval;
+        
+        function goToSlide(index) {
+          currentIndex = (index + slides.length) % slides.length;
+          gsap.to(track, {
+            x: -currentIndex * 100 + '%',
+            duration: 0.8,
+            ease: 'power2.inOut'
+          });
+        }
+        
+        function nextSlide() {
+          goToSlide(currentIndex + 1);
+        }
+        
+        function prevSlide() {
+          goToSlide(currentIndex - 1);
+        }
+        
+        function startAutoplay() {
+          stopAutoplay();
+          autoplayInterval = setInterval(nextSlide, 4000);
+        }
+        
+        function stopAutoplay() {
+          if (autoplayInterval) clearInterval(autoplayInterval);
+        }
+        
+        nextBtn.addEventListener('click', () => {
+          nextSlide();
+          stopAutoplay();
+          startAutoplay();
+        });
+        
+        prevBtn.addEventListener('click', () => {
+          prevSlide();
+          stopAutoplay();
+          startAutoplay();
+        });
+        
+        startAutoplay();
+      }
     </script>
   </body>
 </html>

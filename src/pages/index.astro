@@ -2,7 +2,7 @@
 import "../styles/global.css";
 ---
 
-<nav class="center-nav">
+<nav class="center-nav nav-light">
   <a href="/arch-portfolio/">Home</a>
   <a href="/arch-portfolio/projects">Projects</a>
   <a href="/arch-portfolio/about">About</a>
@@ -10,9 +10,21 @@ import "../styles/global.css";
 
 <section class="hero-fullscreen">
   <div class="hero-overlay"></div>
+  <div class="hero-foreground" aria-hidden="true"></div>
   <div class="hero-text-content">
     <p class="hero-greeting">Welcome to</p>
-    <h1 class="hero-name">404 Studio</h1>
+    <h1 class="hero-name">
+      <span class="digit-wrapper">
+        <span class="digit" data-final="4">4</span>
+      </span>
+      <span class="digit-wrapper">
+        <span class="digit" data-final="0">0</span>
+      </span>
+      <span class="digit-wrapper">
+        <span class="digit" data-final="4">4</span>
+      </span>
+      <span class="studio-text">Studio</span>
+    </h1>
     <p class="hero-tagline">Nice tagline here</p>
   </div>
 </section>
@@ -22,7 +34,7 @@ import "../styles/global.css";
 
 
   <div class="portfolio-grid">
-  <a href="/projects/house-1" class="portfolio-item">
+  <a href="/arch-portfolio/projects/house-1" class="portfolio-item">
 	<img src="/arch-portfolio/images/project01-thumb.png" alt="House 1" />
   <div class="portfolio-overlay">
   <h3>House 1</h3>
@@ -30,7 +42,7 @@ import "../styles/global.css";
   </div>
   </a>
 
-  <a href="/projects/house-2" class="portfolio-item">
+  <a href="/arch-portfolio/projects/house-2" class="portfolio-item">
 	<img src="/arch-portfolio/images/project02-thumb.png" alt="House 2" />
   <div class="portfolio-overlay">
   <h3>House 2</h3>
@@ -38,7 +50,7 @@ import "../styles/global.css";
   </div>
   </a>
 
-  <a href="/projects/room-1" class="portfolio-item">
+  <a href="/arch-portfolio/projects/room-1" class="portfolio-item">
 	<img src="/arch-portfolio/images/project03-thumb.png" alt="Room 1" />
   <div class="portfolio-overlay">
   <h3>Room 1</h3>
@@ -46,7 +58,7 @@ import "../styles/global.css";
   </div>
   </a>
 
-  <a href="/projects/castle-1" class="portfolio-item">
+  <a href="/arch-portfolio/projects/castle-1" class="portfolio-item">
 	<img src="/arch-portfolio/images/project04-thumb.png" alt="Castle 1" />
   <div class="portfolio-overlay">
   <h3>Castle 1</h3>
@@ -70,11 +82,39 @@ import "../styles/global.css";
     ease: "power2.out"
   });
 
-  gsap.from(".hero-name", {
+  // Slot machine animation for 404
+  const digits = document.querySelectorAll(".digit");
+  digits.forEach((digit, index) => {
+    const finalValue = parseInt(digit.dataset.final);
+    const duration = 1.5 + (index * 0.2); // Stagger the settling time
+    const spinCount = 15 + (index * 5); // Number of digit changes
+    
+    let counter = 0;
+    const interval = setInterval(() => {
+      digit.textContent = Math.floor(Math.random() * 10);
+      counter++;
+      
+      if (counter >= spinCount) {
+        clearInterval(interval);
+        // Settle on final value with slight bounce
+        gsap.to(digit, {
+          textContent: finalValue,
+          duration: 0.3,
+          ease: "power2.out",
+          onUpdate: function() {
+            digit.textContent = Math.round(this.targets()[0].textContent);
+          }
+        });
+      }
+    }, 50); // Change digit every 50ms
+  });
+
+  // Fade in Studio text after digits settle
+  gsap.from(".studio-text", {
     opacity: 0,
-    y: 40,
-    duration: 1,
-    delay: 0.1,
+    x: -20,
+    duration: 0.8,
+    delay: 2,
     ease: "power2.out"
   });
 
@@ -82,7 +122,7 @@ import "../styles/global.css";
     opacity: 0,
     y: 20,
     duration: 0.8,
-    delay: 0.2,
+    delay: 2.2,
     ease: "power2.out"
   });
 
