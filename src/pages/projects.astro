@@ -1,0 +1,143 @@
+---
+import "../styles/global.css";
+---
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width,initial-scale=1" />
+    <title>CONTENTS — Projects</title>
+
+    <!-- GSAP -->
+    <script is:inline src="https://cdn.jsdelivr.net/npm/gsap@3.12.5/dist/gsap.min.js"></script>
+    <script is:inline src="https://cdn.jsdelivr.net/npm/gsap@3.12.5/dist/ScrollTrigger.min.js"></script>
+  </head>
+
+  <body>
+    <nav class="center-nav">
+      <a href="/">Home</a>
+      <a href="/projects">Projects</a>
+      <a href="/about">About</a>
+    </nav>
+
+    <main class="container">
+      <h1 class="title">CONTENTS</h1>
+
+      <section class="projects">
+        <a href="/projects/house-1" class="project">
+          <span class="project-number">01.</span>
+          <div class="meta">
+            <span class="category">Residential Project | Islamabad</span>
+            <span class="title-year">House 1 (2017)</span>
+            <span class="location">F-8/3, Islamabad, Pakistan</span>
+          </div>
+          <img class="project-image" src="/images/project01-thumb.png" alt="House 1" />
+        </a>
+
+        <a href="/projects/house-2" class="project">
+          <span class="project-number">02.</span>
+          <div class="meta">
+            <span class="category">Residential Renovation | Islamabad</span>
+            <span class="title-year">House 2 (2017)</span>
+            <span class="location">G-6/4, Islamabad, Pakistan</span>
+          </div>
+          <img class="project-image" src="/images/project02-thumb.png" alt="House 2" />
+        </a>
+
+        <a href="/projects/room-1" class="project">
+          <span class="project-number">03.</span>
+          <div class="meta">
+            <span class="category">Multi-Unit Housing | Islamabad</span>
+            <span class="title-year">Room 1 (2018)</span>
+            <span class="location">I-10 Sector, Islamabad, Pakistan</span>
+          </div>
+          <img class="project-image" src="/images/project03-thumb.png" alt="Room 1" />
+        </a>
+
+        <a href="/projects/castle-1" class="project">
+          <span class="project-number">04.</span>
+          <div class="meta">
+            <span class="category">Civic / Cultural | Islamabad</span>
+            <span class="title-year">Castle 1 (2019)</span>
+            <span class="location">Shakarparian Hills, Islamabad, Pakistan</span>
+          </div>
+          <img class="project-image" src="/images/project04-thumb.png" alt="Castle 1" />
+        </a>
+      </section>
+
+      <div class="footer-space"></div>
+    </main>
+
+    <!-- GSAP ONLY (NO LENIS) -->
+    <script is:inline>
+      gsap.registerPlugin(ScrollTrigger);
+
+      /* Page load: CONTENTS title */
+      gsap.from(".title", {
+        opacity: 0,
+        y: 20,
+        duration: 1,
+        ease: "power2.out"
+      });
+
+      /* Project reveal on scroll */
+      document.querySelectorAll(".project").forEach((project) => {
+        const number = project.querySelector(".project-number");
+        const image = project.querySelector(".project-image");
+        const meta = project.querySelector(".meta");
+
+        gsap.set([number, image, meta], {
+          opacity: 0,
+          y: 30
+        });
+
+        gsap.timeline({
+          scrollTrigger: {
+            trigger: project,
+            start: "top 80%",
+            once: true
+          }
+        })
+        .to(number, {
+          opacity: 1,
+          y: 0,
+          duration: 0.8,
+          ease: "power2.out"
+        })
+        .to(image, {
+          opacity: 1,
+          y: 0,
+          duration: 0.9,
+          ease: "power2.out"
+        }, "-=0.6")
+        .to(meta, {
+          opacity: 1,
+          y: 0,
+          duration: 0.7,
+          ease: "power2.out"
+        }, "-=0.6");
+      });
+
+      /* Hover interaction */
+      document.querySelectorAll(".project").forEach((project) => {
+        const image = project.querySelector(".project-image");
+
+        project.addEventListener("mouseenter", () => {
+          gsap.to(image, {
+            scale: 1.03,
+            duration: 0.6,
+            ease: "power2.out"
+          });
+        });
+
+        project.addEventListener("mouseleave", () => {
+          gsap.to(image, {
+            scale: 1,
+            duration: 0.6,
+            ease: "power2.out"
+          });
+        });
+      });
+    </script>
+  </body>
+</html>

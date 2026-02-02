@@ -1,0 +1,67 @@
+---
+import "../styles/global.css";
+---
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width,initial-scale=1" />
+    <title>About — Portfolio</title>
+    <script is:inline src="https://cdn.jsdelivr.net/npm/gsap@3.12.5/dist/gsap.min.js"></script>
+    <script is:inline src="https://cdn.jsdelivr.net/npm/gsap@3.12.5/dist/ScrollTrigger.min.js"></script>
+  </head>
+  <body>
+    <nav class="center-nav">
+      <a href="/">Home</a>
+      <a href="/projects">Projects</a>
+      <a href="/about">About</a>
+    </nav>
+
+    <section class="about-container">
+      <p class="about-statement">
+        We design spaces that respect their context, respond to climate, and create quiet moments of connection between people and place.
+      </p>
+
+      <img class="about-image" src="/images/project01-thumb.png" alt="Studio" />
+
+      <div class="about-details">
+        <strong>Location</strong>
+        Islamabad, Pakistan
+
+        <strong>Email</strong>
+        studio@example.com
+
+        <strong>Recognition</strong>
+        Selected works featured in regional architecture publications
+      </div>
+    </section>
+
+    <script is:inline>
+      // Register GSAP plugins
+      gsap.registerPlugin(ScrollTrigger);
+
+      // Fade in all elements on load
+      gsap.from('.about-statement', {
+        opacity: 0,
+        y: 20,
+        duration: 1.2,
+        ease: 'power2.out'
+      });
+
+      gsap.from('.about-image', {
+        opacity: 0,
+        duration: 1.5,
+        delay: 0.3,
+        ease: 'power2.out'
+      });
+
+      gsap.from('.about-details', {
+        opacity: 0,
+        y: 20,
+        duration: 1.2,
+        delay: 0.5,
+        ease: 'power2.out'
+      });
+    </script>
+  </body>
+</html>

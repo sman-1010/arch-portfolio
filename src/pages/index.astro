@@ -1,11 +1,114 @@
 ---
-import Welcome from '../components/Welcome.astro';
-import Layout from '../layouts/Layout.astro';
-
-// Welcome to Astro! Wondering what to do next? Check out the Astro documentation at https://docs.astro.build
-// Don't want to use any of this? Delete everything in this file, the `assets`, `components`, and `layouts` directories, and start fresh.
+import "../styles/global.css";
 ---
 
-<Layout>
-	<Welcome />
-</Layout>
+<nav class="center-nav">
+  <a href="/">Home</a>
+  <a href="/projects">Projects</a>
+  <a href="/about">About</a>
+</nav>
+
+<section class="hero-fullscreen">
+  <div class="hero-overlay"></div>
+  <div class="hero-text-content">
+    <p class="hero-greeting">Welcome to</p>
+    <h1 class="hero-name">404 Studio</h1>
+    <p class="hero-tagline">Nice tagline here</p>
+  </div>
+</section>
+
+<section class="featured-section">
+  <h2 class="featured-title">Featured <strong>Portfolio</strong></h2>
+
+
+  <div class="portfolio-grid">
+  <a href="/projects/house-1" class="portfolio-item">
+  <img src="/images/project01-thumb.png" alt="House 1" />
+  <div class="portfolio-overlay">
+  <h3>House 1</h3>
+  <p>Residential Project</p>
+  </div>
+  </a>
+
+  <a href="/projects/house-2" class="portfolio-item">
+  <img src="/images/project02-thumb.png" alt="House 2" />
+  <div class="portfolio-overlay">
+  <h3>House 2</h3>
+  <p>Residential Renovation</p>
+  </div>
+  </a>
+
+  <a href="/projects/room-1" class="portfolio-item">
+  <img src="/images/project03-thumb.png" alt="Room 1" />
+  <div class="portfolio-overlay">
+  <h3>Room 1</h3>
+  <p>Multi-Unit Housing</p>
+  </div>
+  </a>
+
+  <a href="/projects/castle-1" class="portfolio-item">
+  <img src="/images/project04-thumb.png" alt="Castle 1" />
+  <div class="portfolio-overlay">
+  <h3>Castle 1</h3>
+  <p>Civic / Cultural</p>
+  </div>
+  </a>
+  </div>
+</section>
+
+<script type="module">
+  import gsap from "https://esm.sh/gsap@3.12.5";
+  import ScrollTrigger from "https://esm.sh/gsap@3.12.5/ScrollTrigger";
+
+  gsap.registerPlugin(ScrollTrigger);
+
+  // Hero entrance
+  gsap.from(".hero-greeting", {
+    opacity: 0,
+    y: 20,
+    duration: 0.8,
+    ease: "power2.out"
+  });
+
+  gsap.from(".hero-name", {
+    opacity: 0,
+    y: 40,
+    duration: 1,
+    delay: 0.1,
+    ease: "power2.out"
+  });
+
+  gsap.from(".hero-tagline", {
+    opacity: 0,
+    y: 20,
+    duration: 0.8,
+    delay: 0.2,
+    ease: "power2.out"
+  });
+
+  // Scroll reveal
+  gsap.from(".featured-title", {
+    scrollTrigger: {
+      trigger: ".featured-section",
+      start: "top 80%",
+      once: true
+    },
+    opacity: 0,
+    y: 30,
+    duration: 0.8,
+    ease: "power2.out"
+  });
+
+  gsap.from(".portfolio-item", {
+    scrollTrigger: {
+      trigger: ".portfolio-grid",
+      start: "top 75%",
+      once: true
+    },
+    opacity: 0,
+    y: 40,
+    duration: 0.9,
+    stagger: 0.15,
+    ease: "power2.out"
+  });
+</script>
