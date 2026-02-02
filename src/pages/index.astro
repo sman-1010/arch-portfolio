@@ -1,16 +1,34 @@
 ---
 import "../styles/global.css";
+const BASE = import.meta.env.BASE_URL || '/';
+const norm = (p) => {
+  if (!p) return BASE;
+  const b = BASE.endsWith('/') ? BASE : BASE + '/';
+  return b === '/' ? (p.startsWith('/') ? p : '/' + p) : b.replace(/\/$/, '') + (p.startsWith('/') ? p : '/' + p);
+};
+const homeHref = norm('/');
+const projectsHref = norm('/projects');
+const aboutHref = norm('/about');
+const img1 = norm('/images/project01-thumb.png');
+const img2 = norm('/images/project02-thumb.png');
+const img3 = norm('/images/project03-thumb.png');
+const img4 = norm('/images/project04-thumb.png');
+const house1Href = norm('/projects/house-1');
+const house2Href = norm('/projects/house-2');
+const room1Href = norm('/projects/room-1');
+const castle1Href = norm('/projects/castle-1');
 ---
 
 <nav class="center-nav nav-light">
-  <a href="/arch-portfolio/">Home</a>
-  <a href="/arch-portfolio/projects">Projects</a>
-  <a href="/arch-portfolio/about">About</a>
+  <a href={homeHref}>Home</a>
+  <a href={projectsHref}>Projects</a>
+  <a href={aboutHref}>About</a>
 </nav>
 
 <section class="hero-fullscreen">
+  <div class="hero-bg" aria-hidden="true" style={`background-image: url(${norm('/images/hero.jpg')})`}></div>
   <div class="hero-overlay"></div>
-  <div class="hero-foreground" aria-hidden="true"></div>
+  <div class="hero-foreground" aria-hidden="true" style={`background-image: url(${norm('/images/hero.jpg')})`}></div>
   <div class="hero-text-content">
     <p class="hero-greeting">Welcome to</p>
     <h1 class="hero-name">
@@ -34,32 +52,32 @@ import "../styles/global.css";
 
 
   <div class="portfolio-grid">
-  <a href="/arch-portfolio/projects/house-1" class="portfolio-item">
-	<img src="/arch-portfolio/images/project01-thumb.png" alt="House 1" />
+  <a href={house1Href} class="portfolio-item">
+    <img src={img1} alt="House 1" />
   <div class="portfolio-overlay">
   <h3>House 1</h3>
   <p>Residential Project</p>
   </div>
   </a>
 
-  <a href="/arch-portfolio/projects/house-2" class="portfolio-item">
-	<img src="/arch-portfolio/images/project02-thumb.png" alt="House 2" />
+  <a href={house2Href} class="portfolio-item">
+    <img src={img2} alt="House 2" />
   <div class="portfolio-overlay">
   <h3>House 2</h3>
   <p>Residential Renovation</p>
   </div>
   </a>
 
-  <a href="/arch-portfolio/projects/room-1" class="portfolio-item">
-	<img src="/arch-portfolio/images/project03-thumb.png" alt="Room 1" />
+  <a href={room1Href} class="portfolio-item">
+    <img src={img3} alt="Room 1" />
   <div class="portfolio-overlay">
   <h3>Room 1</h3>
   <p>Multi-Unit Housing</p>
   </div>
   </a>
 
-  <a href="/arch-portfolio/projects/castle-1" class="portfolio-item">
-	<img src="/arch-portfolio/images/project04-thumb.png" alt="Castle 1" />
+  <a href={castle1Href} class="portfolio-item">
+    <img src={img4} alt="Castle 1" />
   <div class="portfolio-overlay">
   <h3>Castle 1</h3>
   <p>Civic / Cultural</p>

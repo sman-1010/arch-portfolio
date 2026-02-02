@@ -11,9 +11,9 @@ export async function getStaticPaths() {
         location: 'F-8/3, Islamabad, Pakistan',
         type: 'Residential Project | Built',
         description: 'A compact residential project in Islamabad focusing on local climate, natural ventilation and layered indoor-outdoor living.',
-        hero: '/arch-portfolio/images/project01-thumb.png',
-        images: ['/arch-portfolio/images/project01-thumb.png', '/arch-portfolio/images/project01-thumb.png'],
-        model: '/arch-portfolio/models/project01_desktop.glb'
+        hero: '/images/project01-thumb.png',
+        images: ['/images/project01-thumb.png', '/images/project01-thumb.png'],
+        model: '/models/project01_desktop.glb'
       }
     },
     {
@@ -24,9 +24,9 @@ export async function getStaticPaths() {
         location: 'G-6/4, Islamabad, Pakistan',
         type: 'Residential Renovation | Renovated',
         description: 'A renovation project in Islamabad that reconfigures existing spaces to improve daylighting, privacy and thermal comfort while respecting the original structure.',
-        hero: '/arch-portfolio/images/project02-thumb.png',
-        images: ['/arch-portfolio/images/project02-thumb.png', '/arch-portfolio/images/project02-thumb.png'],
-        model: '/arch-portfolio/models/project02_desktop.glb'
+        hero: '/images/project02-thumb.png',
+        images: ['/images/project02-thumb.png', '/images/project02-thumb.png'],
+        model: '/models/project02_desktop.glb'
       }
     },
     {
@@ -37,9 +37,9 @@ export async function getStaticPaths() {
         location: 'I-10 Sector, Islamabad, Pakistan',
         type: 'Multi-Unit Housing | Concept',
         description: 'A multi-unit housing concept exploring compact living and shared amenities suited to Islamabad suburbs.',
-        hero: '/arch-portfolio/images/project03-thumb.png',
-        images: ['/arch-portfolio/images/project03-thumb.png', '/arch-portfolio/images/project03-thumb.png'],
-        model: '/arch-portfolio/models/project03_desktop.glb'
+        hero: '/images/project03-thumb.png',
+        images: ['/images/project03-thumb.png', '/images/project03-thumb.png'],
+        model: '/models/project03_desktop.glb'
       }
     },
     {
@@ -50,15 +50,28 @@ export async function getStaticPaths() {
         location: 'Shakarparian Hills, Islamabad, Pakistan',
         type: 'Civic / Cultural | Built',
         description: 'A cultural pavilion sited on a hilltop, designed as a landmark gathering place responding to Islamabad\'s landscape and public program needs.',
-        hero: '/arch-portfolio/images/project04-thumb.png',
-        images: ['/arch-portfolio/images/project04-thumb.png', '/arch-portfolio/images/project04-thumb.png'],
-        model: '/arch-portfolio/models/project04_desktop.glb'
+        hero: '/images/project04-thumb.png',
+        images: ['/images/project04-thumb.png', '/images/project04-thumb.png'],
+        model: '/models/project04_desktop.glb'
       }
     }
   ];
 }
 
 const { title, year, location, type, description, hero, images, model } = Astro.props;
+// Build-time base-aware resolver using Vite base (import.meta.env.BASE_URL)
+const BASE = import.meta.env.BASE_URL || '/';
+const norm = (p) => {
+  if (!p) return BASE;
+  const b = BASE.endsWith('/') ? BASE : BASE + '/';
+  return b === '/' ? (p.startsWith('/') ? p : '/' + p) : b.replace(/\/$/, '') + (p.startsWith('/') ? p : '/' + p);
+};
+const homeHref = norm('/');
+const projectsHref = norm('/projects');
+const aboutHref = norm('/about');
+const resolvedModel = model ? norm(model) : null;
+const resolvedHero = hero ? norm(hero) : null;
+const resolvedImages = Array.isArray(images) ? images.map(i => norm(i)) : [];
 ---
 <!doctype html>
 <html lang="en">
@@ -72,9 +85,9 @@ const { title, year, location, type, description, hero, images, model } = Astro.
   </head>
   <body>
     <nav class="center-nav">
-      <a href="/arch-portfolio/">Home</a>
-      <a href="/arch-portfolio/projects">Projects</a>
-      <a href="/arch-portfolio/about">About</a>
+      <a href={homeHref}>Home</a>
+      <a href={projectsHref}>Projects</a>
+      <a href={aboutHref}>About</a>
     </nav>
 
     <div class="project-intro">
@@ -98,7 +111,7 @@ const { title, year, location, type, description, hero, images, model } = Astro.
       </section>
 
       <model-viewer
-        src={model}
+        src={resolvedModel}
         alt={`3D model of ${title}`}
         camera-controls
         auto-rotate
@@ -110,7 +123,7 @@ const { title, year, location, type, description, hero, images, model } = Astro.
     <section class="project-carousel">
       <div class="carousel-container">
         <div class="carousel-track">
-          {images.map((img, index) => (
+          {resolvedImages.map((img, index) => (
             <div class="carousel-slide" data-index={index}>
               <img src={img} alt={title} />
             </div>

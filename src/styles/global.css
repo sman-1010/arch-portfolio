@@ -30,8 +30,9 @@ nav.nav-light a{color:#fff}
 
 /* Full-Screen Hero */
 .hero-fullscreen{position:relative;height:100vh;display:flex;align-items:center;justify-content:center;overflow:hidden}
-.hero-fullscreen::before{content:"";position:absolute;inset:0;background-image:url('/arch-portfolio/images/hero.jpg');background-size:cover;background-position:center;filter:blur(20px);transform:scale(1.03);z-index:0}
-.hero-foreground{position:absolute;left:50%;top:50%;transform:translate(-50%,-50%);width:75%;height:75vh;max-height:85vh;background-image:url('/arch-portfolio/images/hero.jpg');background-size:cover;background-position:center;border-radius:6px;box-shadow:0 12px 36px rgba(0,0,0,0.25);z-index:2}
+/* Background element - image is set inline from the page so it can use BASE_URL */
+.hero-bg{content:"";position:absolute;inset:0;background-size:cover;background-position:center;filter:blur(20px);transform:scale(1.03);z-index:0}
+.hero-foreground{position:absolute;left:50%;top:50%;transform:translate(-50%,-50%);width:75%;height:75vh;max-height:85vh;background-size:cover;background-position:center;border-radius:6px;box-shadow:0 12px 36px rgba(0,0,0,0.25);z-index:2}
 .hero-overlay{position:absolute;top:0;left:0;right:0;bottom:0;background:rgba(0,0,0,0.35);z-index:1}
 .hero-text-content{position:relative;z-index:3;text-align:center;color:#fff}
 .hero-greeting{font-size:clamp(1.2rem, 3vw, 1.8rem);font-weight:300;letter-spacing:0.05em;margin:0 0 16px;opacity:0.95}
