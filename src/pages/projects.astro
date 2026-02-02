@@ -97,43 +97,13 @@ const castle1Href = norm('/projects/castle-1');
         ease: "power2.out"
       });
 
-      /* Project reveal on scroll */
-      document.querySelectorAll(".project").forEach((project) => {
-        const number = project.querySelector(".project-number");
-        const image = project.querySelector(".project-image");
-        const meta = project.querySelector(".meta");
-
-        gsap.set([number, image, meta], {
-          opacity: 0,
-          y: 30
-        });
-
-        gsap.timeline({
-          scrollTrigger: {
-            trigger: project,
-            start: "top 92%",
-            once: true,
-            invalidateOnRefresh: true
-          }
-        })
-        .to(number, {
-          opacity: 1,
-          y: 0,
-          duration: 0.8,
-          ease: "power2.out"
-        })
-        .to(image, {
-          opacity: 1,
-          y: 0,
-          duration: 0.9,
-          ease: "power2.out"
-        }, "-=0.6")
-        .to(meta, {
-          opacity: 1,
-          y: 0,
-          duration: 0.7,
-          ease: "power2.out"
-        }, "-=0.6");
+      // Reveal all projects together on load
+      gsap.from(".project", {
+        opacity: 0,
+        y: 20,
+        duration: 0.9,
+        ease: "power2.out",
+        stagger: 0
       });
 
       /* Hover interaction */
