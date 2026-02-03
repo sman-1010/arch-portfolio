@@ -86,93 +86,101 @@ const castle1Href = norm('/projects/castle-1');
   </div>
 </section>
 
-<script type="module">
-  import gsap from "https://esm.sh/gsap@3.12.5";
-  import ScrollTrigger from "https://esm.sh/gsap@3.12.5/ScrollTrigger";
+<script is:inline src="https://cdn.jsdelivr.net/npm/gsap@3.12.5/dist/gsap.min.js"></script>
+<script is:inline src="https://cdn.jsdelivr.net/npm/gsap@3.12.5/dist/ScrollTrigger.min.js"></script>
+<script>
+  if (typeof gsap === 'undefined') {
+    console.warn('GSAP not loaded — animations disabled');
+  } else {
+    try {
+      gsap.registerPlugin(ScrollTrigger);
 
-  gsap.registerPlugin(ScrollTrigger);
+      // Hero entrance
+      gsap.from(".hero-greeting", {
+        opacity: 0,
+        y: 20,
+        duration: 0.8,
+        ease: "power2.out"
+      });
 
-  // Hero entrance
-  gsap.from(".hero-greeting", {
-    opacity: 0,
-    y: 20,
-    duration: 0.8,
-    ease: "power2.out"
-  });
+      // Slot machine animation for 404
+      const digits = document.querySelectorAll(".digit");
+      digits.forEach((digit, index) => {
+        const finalValue = parseInt(digit.dataset.final);
+        const duration = 1.5 + (index * 0.2); // Stagger the settling time
+        const spinCount = 15 + (index * 5); // Number of digit changes
 
-  // Slot machine animation for 404
-  const digits = document.querySelectorAll(".digit");
-  digits.forEach((digit, index) => {
-    const finalValue = parseInt(digit.dataset.final);
-    const duration = 1.5 + (index * 0.2); // Stagger the settling time
-    const spinCount = 15 + (index * 5); // Number of digit changes
-    
-    let counter = 0;
-    const interval = setInterval(() => {
-      digit.textContent = Math.floor(Math.random() * 10);
-      counter++;
-      
-      if (counter >= spinCount) {
-        clearInterval(interval);
-        // Settle on final value with slight bounce
-        gsap.to(digit, {
-          textContent: finalValue,
-          duration: 0.3,
-          ease: "power2.out",
-          onUpdate: function() {
-            digit.textContent = Math.round(this.targets()[0].textContent);
+        let counter = 0;
+        const interval = setInterval(() => {
+          digit.textContent = Math.floor(Math.random() * 10);
+          counter++;
+
+          if (counter >= spinCount) {
+            clearInterval(interval);
+            // Settle on final value with slight bounce
+            gsap.to(digit, {
+              textContent: finalValue,
+              duration: 0.3,
+              ease: "power2.out",
+              onUpdate: function() {
+                digit.textContent = Math.round(this.targets()[0].textContent);
+              }
+            });
           }
+        }, 50); // Change digit every 50ms
+      });
+
+      // Fade in Studio text after digits settle
+      gsap.from(".studio-text", {
+        opacity: 0,
+        x: -20,
+        duration: 0.8,
+        delay: 2,
+        ease: "power2.out"
+      });
+
+      gsap.from(".hero-tagline", {
+        opacity: 0,
+        y: 20,
+        duration: 0.8,
+        delay: 2.2,
+        ease: "power2.out"
+      });
+
+      // Scroll reveal
+      gsap.from(".featured-title", {
+        scrollTrigger: {
+          trigger: ".featured-section",
+          start: "top 90%",
+          once: true
+        },
+        opacity: 0,
+        y: 30,
+        duration: 0.8,
+        ease: "power2.out"
+      });
+
+      gsap.from(".portfolio-item", {
+        scrollTrigger: {
+          trigger: ".portfolio-grid",
+          start: "top 90%",
+          once: true
+        },
+        opacity: 0,
+        y: 40,
+        duration: 0.9,
+        stagger: 0.15,
+        ease: "power2.out"
+      });
+
+      // Refresh ScrollTrigger on orientation change to ensure positions recalc on mobile
+      if (typeof window !== 'undefined') {
+        window.addEventListener('orientationchange', () => {
+          try{ ScrollTrigger.refresh(); } catch(e){}
         });
       }
-    }, 50); // Change digit every 50ms
-  });
-
-  // Fade in Studio text after digits settle
-  gsap.from(".studio-text", {
-    opacity: 0,
-    x: -20,
-    duration: 0.8,
-    delay: 2,
-    ease: "power2.out"
-  });
-
-  gsap.from(".hero-tagline", {
-    opacity: 0,
-    y: 20,
-    duration: 0.8,
-    delay: 2.2,
-    ease: "power2.out"
-  });
-
-  // Scroll reveal
-  gsap.from(".featured-title", {
-    scrollTrigger: {
-      trigger: ".featured-section",
-      start: "top 90%",
-      once: true
-    },
-    opacity: 0,
-    y: 30,
-    duration: 0.8,
-    ease: "power2.out"
-  });
-
-  gsap.from(".portfolio-item", {
-    scrollTrigger: {
-      trigger: ".portfolio-grid",
-      start: "top 90%",
-      once: true
-    },
-    opacity: 0,
-    y: 40,
-    duration: 0.9,
-    stagger: 0.15,
-    ease: "power2.out"
-  });
-  // Refresh ScrollTrigger on orientation change to ensure positions recalc on mobile
-  if (typeof window !== 'undefined') {
-    window.addEventListener('orientationchange', () =&gt; {
-      try{ ScrollTrigger.refresh(); } catch(e){}
-    });
+    } catch (e) {
+      console.warn('GSAP init failed', e);
+    }
   }
 </script>
